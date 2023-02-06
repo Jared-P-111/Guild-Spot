@@ -1,4 +1,5 @@
 const Character = require('../models/character.model');
+const User = require('../models/user.model.js');
 
 //Utility for terminal
 const showAll = async () => {
@@ -7,7 +8,9 @@ const showAll = async () => {
 };
 
 //create new character
-const create = (req, res) => {
+const create = async (req, res) => {
+  const { userId } = req.body;
+
   Character.create(req.body)
     .then((character) => {
       showAll();

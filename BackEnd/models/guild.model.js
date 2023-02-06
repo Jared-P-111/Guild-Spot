@@ -5,10 +5,10 @@ const guildSchema = new Schema(
   {
     name: String,
     memberCount: Number,
-    characters: [
+    users: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'Character',
+        ref: 'Users',
       },
     ],
   },

@@ -4,10 +4,7 @@ const Schema = mongoose.Schema;
 const characterSchema = new Schema(
   {
     name: String,
-    guild: {
-      type: Schema.Types.ObjectId,
-      ref: 'Guild',
-    },
+    guild: Schema.Types.ObjectId,
   },
   { timestamps: true }
 );
