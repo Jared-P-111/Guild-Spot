@@ -17,12 +17,13 @@ const findAll = (req, res) => {
 };
 
 const signupUser = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, userName } = req.body;
   console.log(`Email: ${email} ---- Password: ${password}`);
+  console.log(`User Name: ${userName}`);
 
   try {
-    const user = await User.signup(email, password);
-    res.status(200).json({ email, user });
+    const user = await User.signup(email, password, userName);
+    res.status(200).json({ email, userName, user });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

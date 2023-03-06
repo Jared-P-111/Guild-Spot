@@ -7,8 +7,6 @@ const userSchema = new Schema(
   {
     userName: {
       type: String,
-      required: true,
-      unique: true,
     },
     email: {
       type: String,
@@ -30,9 +28,9 @@ const userSchema = new Schema(
   { timestamps: true }
 );
 
-userSchema.statics.signup = async function (email, password) {
+userSchema.statics.signup = async function (email, password, userName) {
   //🧈Validation
-  if (!email || !password) {
+  if (!email || !password || !userName) {
     throw Error('All fields need to be filled');
   }
   if (!validator.isEmail(email)) {
@@ -43,9 +41,15 @@ userSchema.statics.signup = async function (email, password) {
   }
 
   //🧈Check if email in use.
-  const exists = await this.findOne({ email });
-  if (exists) {
+  const emailExists = await this.findOne({ email });
+  if (emailExists) {
     throw Error('All fields must be appropriate EMAIL IN USE');
+  }
+
+  //🧈Check if user name in use.
+  const userExists = await this.findOne({ userName });
+  if (userExists) {
+    throw Error('All fields must be appropriate USERNAME IN USE');
   }
 
   const salt = await bcrypt.genSalt(10);

@@ -7,7 +7,7 @@ const connectDb = () => {
   mongoose.set('strictQuery', true);
   mongoose
     .connect(
-      'mongodb+srv://data5age:4GJQXw92ObEdCWQE@guild-spot.4k8rxvy.mongodb.net/?retryWrites=true&w=majority',
+      'mongodb+srv://data5age:4GJQXw92ObEdCWQE@guild-spot.mcpbsc0.mongodb.net/?retryWrites=true&w=majority',
       {
         retryWrites: true,
       }
