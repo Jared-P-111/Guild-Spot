@@ -16,13 +16,16 @@ const findAll = (req, res) => {
     .catch((err) => res.status(400).json(err));
 };
 
-const createUser = (req, res) => {
-  User.create(req.body)
-    .then((user) => {
-      showAll();
-      res.status(201).json(user);
-    })
-    .catch((err) => res.status(400).json(err));
+const signupUser = async (req, res) => {
+  const { email, password } = req.body;
+  console.log(`Email: ${email} ---- Password: ${password}`);
+
+  try {
+    const user = await User.signup(email, password);
+    res.status(200).json({ email, user });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 };
 
 const deleteUserById = (req, res) => {
@@ -64,4 +67,4 @@ const leaveGuild = async (req, res) => {
   }
 };
 
-module.exports = { findAll, joinGuild, leaveGuild, createUser, deleteUserById };
+module.exports = { findAll, joinGuild, leaveGuild, deleteUserById, signupUser };

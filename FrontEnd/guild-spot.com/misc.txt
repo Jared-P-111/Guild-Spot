@@ -1,1 +1,0 @@
-mongodb+srv://data5age:fAaDXK0HvVMEm5NC@guild-spot.vwapkft.mongodb.net/?retryWrites=true&w=majority

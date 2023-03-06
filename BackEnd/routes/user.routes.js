@@ -1,8 +1,8 @@
 const {
   findAll,
+  signupUser,
   joinGuild,
   leaveGuild,
-  createUser,
   deleteUserById,
 } = require('../controllers/user.controller');
 
@@ -12,8 +12,12 @@ const userRouter = express.Router();
 
 //prettier-ignore
 userRouter
+  .route('/signup')
+  .post(signupUser);
+
+//prettier-ignore
+userRouter
   .route('/')
-  .post(createUser)
   .get(findAll)
 
 //prettier-ignore

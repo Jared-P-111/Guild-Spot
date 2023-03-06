@@ -25,6 +25,7 @@ app.use('/api/guilds', guildRouter);
 const characterRouter = require('./routes/character.routes');
 app.use('/api/characters', characterRouter);
 
+//Establish user router
 const userRouter = require('./routes/user.routes');
 app.use('/api/users', userRouter);
 
