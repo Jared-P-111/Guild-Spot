@@ -8,7 +8,7 @@ const guildSchema = new Schema(
     users: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'Users',
+        ref: 'User',
       },
     ],
   },

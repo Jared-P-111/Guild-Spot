@@ -7,6 +7,8 @@ const userSchema = new Schema(
   {
     userName: {
       type: String,
+      required: true,
+      unique: true,
     },
     email: {
       type: String,
@@ -20,7 +22,7 @@ const userSchema = new Schema(
     userCharacters: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'User Characters',
+        ref: 'Character',
       },
     ],
     guildId: Schema.Types.ObjectId,
@@ -32,6 +34,9 @@ userSchema.statics.signup = async function (email, password, userName) {
   //🧈Validation
   if (!email || !password || !userName) {
     throw Error('All fields need to be filled');
+  }
+  if (userName.length < 3) {
+    throw Error('User Name must be 3 characters or more');
   }
   if (!validator.isEmail(email)) {
     throw Error('All fields must be appropriate EMAIL');
@@ -55,7 +60,8 @@ userSchema.statics.signup = async function (email, password, userName) {
   const salt = await bcrypt.genSalt(10);
   const hash = await bcrypt.hash(password, salt);
 
-  const user = await this.create({ email, password: hash });
+  //🧈Create User and send back
+  const user = await this.create({ email, password: hash, userName });
 
   return user;
 };
