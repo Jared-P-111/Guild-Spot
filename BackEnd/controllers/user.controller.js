@@ -38,6 +38,21 @@ const signupUser = async (req, res) => {
   }
 };
 
+// login user
+const loginUser = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await User.login(email, password);
+
+    //🌮Create Token
+    const token = createToken(user._id);
+    res.status(200).json({ email, token });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 const deleteUserById = (req, res) => {
   const { id } = req.params;
   User.findByIdAndDelete(id)
@@ -93,4 +108,4 @@ const leaveGuild = async (req, res) => {
   }
 };
 
-module.exports = { findAll, joinGuild, leaveGuild, deleteUserById, signupUser };
+module.exports = { findAll, joinGuild, leaveGuild, deleteUserById, signupUser, loginUser };

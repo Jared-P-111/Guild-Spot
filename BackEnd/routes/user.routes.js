@@ -1,6 +1,7 @@
 const {
   findAll,
   signupUser,
+  loginUser,
   joinGuild,
   leaveGuild,
   deleteUserById,
@@ -14,6 +15,11 @@ const userRouter = express.Router();
 userRouter
   .route('/signup')
   .post(signupUser);
+
+//prettier-ignore
+userRouter
+  .route('/login')
+  .post(loginUser);
 
 //prettier-ignore
 userRouter
