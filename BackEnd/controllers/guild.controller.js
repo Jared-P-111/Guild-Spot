@@ -9,7 +9,6 @@ const showAll = async () => {
 const create = (req, res) => {
   Guild.create(req.body)
     .then((guild) => {
-      showAll();
       res.status(201).json(guild);
     })
     .catch((err) => res.status(400).json(err));

@@ -29,6 +29,10 @@ app.use('/api/characters', characterRouter);
 const userRouter = require('./routes/user.routes');
 app.use('/api/users', userRouter);
 
+//Establish game router
+const gameRouter = require('./routes/game.routes');
+app.use('/api/games', gameRouter);
+
 //Use env variable for are port
 const port = process.env.PORT || 8000;
 

@@ -9,14 +9,27 @@ const showAll = async () => {
 
 //create new character
 const create = async (req, res) => {
-  const { userId } = req.body;
+  const { userId, name } = req.body;
+  try {
+    const character = await Character.create(req.body);
+    const checkUser = await User.findById(userId);
+    console.log(`Conditional Check ------> : ${checkUser.characterNames.includes(name)}`);
 
-  Character.create(req.body)
-    .then((character) => {
-      showAll();
-      res.status(201).json(character);
-    })
-    .catch((err) => res.status(400).json(err));
+    if (checkUser.characterNames.includes(name)) {
+      const user = await User.findByIdAndUpdate(
+        userId,
+        { $push: { userCharacters: character._id } },
+        { $push: { characterNames: { name: name, userId: userId } } },
+        { new: true }
+      );
+      console.log(`User ==============> : ${user}`);
+      res.status(200).json({ character, user });
+    } else {
+      return res.status(400).json({ error: 'That character name in use' });
+    }
+  } catch (error) {
+    res.status(400).json({ CatchBlockerror: error.message });
+  }
 };
 
 const findAll = (req, res) => {

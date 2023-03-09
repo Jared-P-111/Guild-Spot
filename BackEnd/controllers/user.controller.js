@@ -1,4 +1,5 @@
 const Guild = require('../models/guild.model');
+const Game = require('../models/game.model');
 const User = require('../models/user.model');
 const jwt = require('jsonwebtoken');
 
@@ -8,7 +9,6 @@ const showAll = async () => {
   console.log(allCharacters);
 };
 
-//🌮create json web token
 const createToken = (_id) => {
   return jwt.sign({ _id }, process.env.SECRET, { expiresIn: '10d' });
 };
@@ -24,13 +24,10 @@ const findAll = (req, res) => {
 
 const signupUser = async (req, res) => {
   const { email, password, userName } = req.body;
-  console.log(`Email: ${email} ---- Password: ${password}`);
-  console.log(`User Name: ${userName}`);
 
   try {
     const user = await User.signup(email, password, userName);
 
-    //🌮Create Token
     const token = createToken(user._id);
     res.status(200).json({ email, userName, token, user });
   } catch (error) {
@@ -45,7 +42,6 @@ const loginUser = async (req, res) => {
   try {
     const user = await User.login(email, password);
 
-    //🌮Create Token
     const token = createToken(user._id);
     res.status(200).json({ email, token });
   } catch (error) {
@@ -68,7 +64,6 @@ const joinGuild = async (req, res) => {
 
   const getGuild = await Guild.findById(guildId);
   const currUsers = getGuild.users;
-  let update = {};
 
   if (!currUsers.includes(userId)) {
     update = {
@@ -83,6 +78,32 @@ const joinGuild = async (req, res) => {
   const guild = await Guild.findByIdAndUpdate(guildId, update, { new: true });
 
   res.status(200).json({ guild, user });
+};
+
+const joinGame = async (req, res) => {
+  const { gameId, userId } = req.body;
+
+  const getGame = await Game.findById(gameId);
+  const currGameUsers = getGame.users;
+  if (!currGameUsers.includes(userId)) {
+    gameUpdate = { $push: { users: userId } };
+  } else {
+    return res.status(400).json({ error: 'That user is already subscribed to this game' });
+  }
+
+  //🌮Check the games array in the user if userId is there or not
+  const getUser = await User.findById(userId);
+  const currUserGames = getUser.games;
+  if (!currUserGames.includes(gameId)) {
+    userUpdate = { $push: { games: gameId } };
+  } else {
+    return res.status(400).json({ error: 'That game already has this user' });
+  }
+
+  const game = await Game.findByIdAndUpdate(gameId, gameUpdate, { new: true });
+  const user = await User.findByIdAndUpdate(userId, userUpdate, { new: true });
+
+  res.status(200).json({ game, user });
 };
 
 const leaveGuild = async (req, res) => {
@@ -108,4 +129,12 @@ const leaveGuild = async (req, res) => {
   }
 };
 
-module.exports = { findAll, joinGuild, leaveGuild, deleteUserById, signupUser, loginUser };
+module.exports = {
+  findAll,
+  joinGuild,
+  joinGame,
+  leaveGuild,
+  deleteUserById,
+  signupUser,
+  loginUser,
+};

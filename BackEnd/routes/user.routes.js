@@ -3,6 +3,7 @@ const {
   signupUser,
   loginUser,
   joinGuild,
+  joinGame,
   leaveGuild,
   deleteUserById,
 } = require('../controllers/user.controller');
@@ -23,6 +24,11 @@ userRouter
 
 //prettier-ignore
 userRouter
+  .route('/join/game')
+  .post(joinGame);
+
+//prettier-ignore
+userRouter
   .route('/')
   .get(findAll)
 
@@ -33,7 +39,7 @@ userRouter
 
 //prettier-ignore
 userRouter
-  .route('/join')
+  .route('/join/guild')
   .post(joinGuild)
 
 //prettier-ignore

@@ -25,6 +25,18 @@ const userSchema = new Schema(
         ref: 'Character',
       },
     ],
+    characterNames: [
+      {
+        type: Object,
+        ref: 'CharacterName',
+      },
+    ],
+    games: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Game',
+      },
+    ],
     guildId: Schema.Types.ObjectId,
   },
   { timestamps: true }
@@ -81,7 +93,7 @@ userSchema.statics.login = async function (email, password) {
   const match = await bcrypt.compare(password, user.password);
 
   if (!match) {
-    throw Error('Invalid Credentials: PASS not matching');
+    throw Error('Invalid Credentials');
   }
 
   return user;
